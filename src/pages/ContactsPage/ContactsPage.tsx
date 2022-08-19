@@ -18,6 +18,7 @@ export type ContactProps = {
 
 const ContactsPage = () => {
 	const { authorized, contacts, id: userId } = useAppSelector(state => state.userSlice.user);
+	// localContacts - переменная где хранятся варианты поиска
 	const [localContacts, setLocalContacts] = useState<ContactProps[]>(contacts ?? []);
 	const [searchInput, setSearchInput] = useState<string>('');
 	const dispatch = useAppDispatch();
@@ -49,7 +50,7 @@ const ContactsPage = () => {
 				<Input value={searchInput} onChange={onSearchInputChange} placeholder={'Поиск'}
 							 className={cl.contactsSearchInput} />
 				<div className={cl.contacts}>
-					{localContacts.length > 0 ? localContacts.map((contact) => (
+					{localContacts ? localContacts.map((contact) => (
 							<Contact contact={contact} key={contact.id} />
 						)
 					) : ''}

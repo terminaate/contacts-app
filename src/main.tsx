@@ -6,7 +6,7 @@ import store from './store';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/AppRouter';
 
-// Если вы смотрите это, то скажу заранее - большинство перерисовок в приложении идут из-за компонентов material ui
+// Если вы смотрите это, то скажу заранее - большинство перерисовок в приложении идут как я понял из-за компонентов mui
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>

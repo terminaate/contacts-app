@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import cl from '@/pages/ContactsPage/ContactsPage.module.css';
+import cl from './NewContact.module.css';
 import { Avatar, IconButton, Input } from '@mui/material';
 import createImg from '!/img/create.png';
 import closeImg from '!/img/close.svg';
 import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
-import { useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { addContact } from '@/store/reducers/userAPI';
 
 const NewContact = () => {
 	const { id: userId } = useAppSelector(state => state.userSlice.user);
+	const dispatch = useAppDispatch();
 	const [newContact, setNewContact] = useState<ContactProps & { active: boolean }>({
 		active: false,
 		title: '',
@@ -19,7 +21,9 @@ const NewContact = () => {
 	const newContactButtonHandler = () => {
 		if (newContact.active) {
 			if (!newContact.title) return;
-
+			const { active, ...data } = newContact;
+			dispatch(addContact({ ...data, photo: newContactPhoto }));
+			closeNewContact();
 		} else {
 			setNewContact({ ...newContact, active: true });
 		}
@@ -45,7 +49,7 @@ const NewContact = () => {
 		setNewContact({ ...newContact, description: e.target.value });
 	};
 
-	const closeNewContactButtonHandler = () => {
+	const closeNewContact = () => {
 		setNewContact({
 			...newContact,
 			active: false,
@@ -58,7 +62,7 @@ const NewContact = () => {
 	return (
 		<div onClick={!newContact.active ? newContactButtonHandler : () => 0} data-active={newContact.active}
 				 className={cl.addNewContactContainer}>
-			{!newContact.active ? (<span>New contact</span>) : (
+			{!newContact.active ? <span>New contact</span> :
 				<>
 					<div className={cl.newContactInfoContainer}>
 						<label>
@@ -77,12 +81,12 @@ const NewContact = () => {
 						<IconButton onClick={newContactButtonHandler}>
 							<img src={createImg} alt='' />
 						</IconButton>
-						<IconButton onClick={closeNewContactButtonHandler}>
+						<IconButton onClick={closeNewContact}>
 							<img src={closeImg} alt='' />
 						</IconButton>
 					</div>
 				</>
-			)}
+			}
 		</div>
 	);
 };

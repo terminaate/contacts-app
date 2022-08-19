@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteContact, getContacts, login } from '@/store/reducers/userAPI';
+import { addContact, deleteContact, getContacts, login } from '@/store/reducers/userAPI';
 import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
 
 
@@ -49,7 +49,7 @@ export const userSlice = createSlice({
 			state.user.error = null;
 		};
 
-		const asyncThunks = [login, getContacts, deleteContact];
+		const asyncThunks = [login, getContacts, deleteContact, addContact];
 		for (let asyncThunk of asyncThunks) {
 			builder.addCase(asyncThunk.pending, handlePending);
 			builder.addCase(asyncThunk.rejected, handleReject);
@@ -66,8 +66,11 @@ export const userSlice = createSlice({
 		});
 
 		builder.addCase(deleteContact.fulfilled, (state, action: any) => {
-			console.log(action);
 			state.user.contacts = state.user.contacts.filter(contact => contact.id !== action.payload);
+		});
+
+		builder.addCase(addContact.fulfilled, (state, action: any) => {
+			state.user.contacts = [...state.user.contacts, action.payload];
 		});
 	}
 });
