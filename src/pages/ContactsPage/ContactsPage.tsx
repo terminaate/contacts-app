@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import cl from './ContactsPage.module.css';
 import { Input } from '@mui/material';
 import { getContacts } from '@/store/reducers/userAPI';
-import Contact from '@/components/Contact/Contact';
-import NewContact from '@/components/NewContact/NewContact';
+import Contact from '@/components/Contact';
+import NewContact from '@/components/NewContact';
 
 export type ContactProps = {
 	title: string;

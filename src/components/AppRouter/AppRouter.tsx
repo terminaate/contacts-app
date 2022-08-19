@@ -6,6 +6,7 @@ import { DialogTitle } from '@mui/material';
 import cl from './AppRouter.module.css';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { logout, updateUser } from '@/store/reducers/userSlice';
+import RegisterPage from '@/pages/RegisterPage';
 
 const AppRouter = () => {
 	const dispatch = useAppDispatch();
@@ -46,6 +47,7 @@ const AppRouter = () => {
 			<Routes>
 				<Route path={'/'} element={<Navigate to={user.authorized ? '/contacts' : '/login'} />} />
 				<Route element={<LoginPage />} path={'/login'} />
+				<Route element={<RegisterPage />} path={'/register'} />
 				<Route element={<ContactsPage />} path={'/contacts'} />
 			</Routes>
 		</>

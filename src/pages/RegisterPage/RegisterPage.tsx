@@ -1,12 +1,11 @@
-import cl from './LoginPage.module.css';
-import { Button, Input } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '@/store/reducers/userAPI';
+import { register } from '@/store/reducers/userAPI';
+import cl from './RegisterPage.module.css';
+import { Button, Input } from '@mui/material';
 
-
-const LoginPage = () => {
+const RegisterPage = () => {
 	const [emailInput, setEmailInput] = useState<string>('');
 	const [emailError, setEmailError] = useState<string>('');
 	const [passwordInput, setPasswordInput] = useState<string>('');
@@ -15,13 +14,13 @@ const LoginPage = () => {
 	const { authorized, error: serverError } = useAppSelector(state => state.userSlice.user);
 	const navigate = useNavigate();
 
-	const loginButtonHandler = () => {
+	const registerButtonHandler = () => {
 		setEmailError('');
 		setPasswordError('');
 		if (!emailInput) return setEmailError('Поле не должно быть пустым!');
 		if (!passwordInput) return setPasswordError('Поле не должно быть пустым!');
 
-		dispatch(login({ email: emailInput, password: passwordInput }));
+		dispatch(register({ email: emailInput, password: passwordInput }));
 	};
 
 	useEffect(() => {
@@ -31,29 +30,29 @@ const LoginPage = () => {
 	}, [authorized]);
 
 	return (
-		<div className={cl.loginPage}>
-			<div className={cl.loginContainer}>
-				<h1>Страница входа</h1>
-				<div className={cl.loginInputsContainer}>
-					<div className={cl.loginInputContainer}>
+		<div className={cl.registerPage}>
+			<div className={cl.registerContainer}>
+				<h1>Страница регистрации</h1>
+				<div className={cl.registerInputsContainer}>
+					<div className={cl.registerInputContainer}>
 						<Input value={emailInput} placeholder={'Почта*'}
 									 onChange={e => setEmailInput(e.target.value)} />
 						{emailError && (<span className={cl.error}>{emailError}</span>)}
 					</div>
-					<div className={cl.loginInputContainer}>
+					<div className={cl.registerInputContainer}>
 						<Input value={passwordInput} placeholder={'Пароль*'}
 									 onChange={e => setPasswordInput(e.target.value)} />
 						{passwordError && (<span className={cl.error}>{passwordError}</span>)}
 					</div>
 				</div>
 				{serverError && (<div className={cl.serverError}>{serverError}</div>)}
-				<div className={cl.loginButtonsContainer}>
-					<Link to={'/register'}>Уже есть аккаунт?</Link>
-					<Button onClick={loginButtonHandler} className={cl.loginButton}>Войти</Button>
+				<div className={cl.registerButtonsContainer}>
+					<Link to={'/login'}>Уже есть аккаунт?</Link>
+					<Button onClick={registerButtonHandler} className={cl.registerButton}>Зарегестрироваться</Button>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default LoginPage;
+export default RegisterPage;

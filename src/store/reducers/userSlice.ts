@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addContact, deleteContact, editContact, getContacts, login } from '@/store/reducers/userAPI';
+import { addContact, deleteContact, editContact, getContacts, login, register } from '@/store/reducers/userAPI';
 import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
 
 
@@ -49,17 +49,20 @@ export const userSlice = createSlice({
 			state.user.error = null;
 		};
 
-		const asyncThunks = [login, getContacts, deleteContact, addContact];
+		const asyncThunks = [login, register, getContacts, deleteContact, addContact];
 		for (let asyncThunk of asyncThunks) {
 			builder.addCase(asyncThunk.pending, handlePending);
 			builder.addCase(asyncThunk.rejected, handleReject);
 		}
 
-		builder.addCase(login.fulfilled, (state, action: any) => {
+		const handleAuth = (state: UserState, action: any) => {
 			state.user = { ...action.payload.user, accessToken: action.payload.accessToken, error: null, authorized: true };
 			localStorage.setItem('accessToken', state.user.accessToken!);
 			localStorage.setItem('user', JSON.stringify({ id: state.user.id, email: state.user.email }));
-		});
+		};
+
+		builder.addCase(login.fulfilled, handleAuth);
+		builder.addCase(register.fulfilled, handleAuth);
 
 		builder.addCase(getContacts.fulfilled, (state, action: any) => {
 			state.user.contacts = action.payload;

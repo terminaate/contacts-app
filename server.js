@@ -12,7 +12,10 @@ const rules = auth.rewriter({
 	contacts: 640
 });
 
-app.use(middlewares)
+// TODO
+// Rewrite server to typescript
+
+app.use(middlewares);
 app.use(rules);
 app.use(auth);
 app.use(router);

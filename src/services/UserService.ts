@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import $api from '@/http';
 
-export type LoginResponseProps = {
+export type AuthResponseProps = {
 	accessToken: string;
 	user: {
 		id: number;
@@ -10,8 +10,12 @@ export type LoginResponseProps = {
 }
 
 class UserService {
-	static async login(email: string, password: string): Promise<AxiosResponse<LoginResponseProps>> {
-		return $api.post<LoginResponseProps>('/login', { email, password });
+	static async login(email: string, password: string): Promise<AxiosResponse<AuthResponseProps>> {
+		return $api.post<AuthResponseProps>('/login', { email, password });
+	}
+
+	static async register(email: string, password: string): Promise<AxiosResponse<AuthResponseProps>> {
+		return $api.post<AuthResponseProps>('/register', { email, password });
 	}
 }
 
