@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import LoginPage from '@/pages/LoginPage';
 import ContactsPage from '@/pages/ContactsPage';
 import { DialogTitle } from '@mui/material';
@@ -9,8 +9,9 @@ import { logout, updateUser } from '@/store/reducers/userSlice';
 
 const AppRouter = () => {
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 	const { user } = useAppSelector(state => state.userSlice);
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	useEffect(() => {
 		if (localStorage.getItem('accessToken') && localStorage.getItem('user')) {
@@ -19,9 +20,13 @@ const AppRouter = () => {
 				authorized: true,
 				...JSON.parse(localStorage.getItem('user')!)
 			}));
-			console.log(user.authorized);
 		}
 	}, []);
+
+
+	useEffect(() => {
+		dispatch(updateUser({ error: null }));
+	}, [location]);
 
 	const logoutHandler = () => {
 		dispatch(logout());

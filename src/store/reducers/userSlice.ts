@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getContacts, login } from '@/store/reducers/userAPI';
+import { deleteContact, getContacts, login } from '@/store/reducers/userAPI';
 import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
 
 
@@ -30,7 +30,7 @@ export const userSlice = createSlice({
 	initialState,
 	reducers: {
 		updateUser(state, action) {
-			state.user = { ...action.payload };
+			state.user = { ...state.user, ...action.payload };
 		},
 		logout(state) {
 			state.user = initialState.user;
@@ -39,30 +39,35 @@ export const userSlice = createSlice({
 		}
 	},
 	extraReducers: (builder) => {
+		// Простите за то что использую здесь тип any, просто я правда для action не нашёл типизации
+
+		const handleReject = (state: UserState, action: any) => {
+			state.user.error = action.payload;
+		};
+
+		const handlePending = (state: UserState) => {
+			state.user.error = null;
+		};
+
+		const asyncThunks = [login, getContacts, deleteContact];
+		for (let asyncThunk of asyncThunks) {
+			builder.addCase(asyncThunk.pending, handlePending);
+			builder.addCase(asyncThunk.rejected, handleReject);
+		}
+
 		builder.addCase(login.fulfilled, (state, action: any) => {
 			state.user = { ...action.payload.user, accessToken: action.payload.accessToken, error: null, authorized: true };
 			localStorage.setItem('accessToken', state.user.accessToken!);
 			localStorage.setItem('user', JSON.stringify({ id: state.user.id, email: state.user.email }));
 		});
 
-		builder.addCase(login.pending, (state) => {
-			state.user.error = null;
-		});
-
-		builder.addCase(login.rejected, (state, action) => {
-			state.user.error = (action.payload as string);
-		});
-
 		builder.addCase(getContacts.fulfilled, (state, action: any) => {
 			state.user.contacts = action.payload;
 		});
 
-		builder.addCase(getContacts.pending, (state) => {
-			state.user.error = null;
-		});
-
-		builder.addCase(getContacts.rejected, (state, action) => {
-			state.user.error = (action.payload as string);
+		builder.addCase(deleteContact.fulfilled, (state, action: any) => {
+			console.log(action);
+			state.user.contacts = state.user.contacts.filter(contact => contact.id !== action.payload);
 		});
 	}
 });

@@ -7,8 +7,6 @@ import { login } from '@/store/reducers/userAPI';
 
 
 const LoginPage = () => {
-	// Если вы смотрите этот код, то скажу заранее - большинство перерисовок на этой странице идут из-за компонентов material ui
-
 	const [emailInput, setEmailInput] = useState<string>('tntwnik@gmail.com');
 	const [emailError, setEmailError] = useState<string>('');
 	const [passwordInput, setPasswordInput] = useState<string>('1234567');

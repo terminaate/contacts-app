@@ -13,6 +13,12 @@ $api.interceptors.request.use((config) => {
 	return config;
 });
 
-$api.interceptors.response.use((config) => config);
+$api.interceptors.response.use((config) => config, (error) => {
+	if (error.response.status == 401 && error.response.data === 'jwt expired' && error.config) {
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('user');
+	}
+	throw error;
+});
 
 export default $api;

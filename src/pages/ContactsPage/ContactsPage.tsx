@@ -1,40 +1,59 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import cl from './ContactsPage.module.css';
 import { Input } from '@mui/material';
 import { getContacts } from '@/store/reducers/userAPI';
+import Contact from '@/components/Contact/Contact';
+import NewContact from '@/components/NewContact/NewContact';
 
 export type ContactProps = {
 	title: string;
-	description: string;
-	photo: string;
+	description?: string;
+	photo?: string;
 	id: number;
 	userId: number;
 }
 
 
 const ContactsPage = () => {
-	const { authorized, contacts, id } = useAppSelector(state => state.userSlice.user);
+	const { authorized, contacts, id: userId } = useAppSelector(state => state.userSlice.user);
+	const [localContacts, setLocalContacts] = useState<ContactProps[]>(contacts ?? []);
+	const [searchInput, setSearchInput] = useState<string>('');
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		setLocalContacts(contacts);
+	}, [contacts]);
 
 	useEffect(() => {
 		if (!authorized) {
 			navigate('/login');
 		} else {
-			dispatch(getContacts(id!));
+			dispatch(getContacts(userId!));
 		}
 	}, []);
 
+	const onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		setSearchInput(value);
+
+		setLocalContacts(contacts.filter(contact => contact.title.includes(value)));
+	};
 
 	return (
 		<div className={cl.contactsPage}>
 			<div className={cl.contactsContainer}>
 				<h2>Contacts</h2>
-				<Input placeholder={'Поиск'} className={cl.contactsSearchInput} />
+				<Input value={searchInput} onChange={onSearchInputChange} placeholder={'Поиск'}
+							 className={cl.contactsSearchInput} />
 				<div className={cl.contacts}>
-					{JSON.stringify(contacts)}
+					{localContacts.length > 0 ? localContacts.map((contact) => (
+							<Contact contact={contact} key={contact.id} />
+						)
+					) : ''}
+					<NewContact />
 				</div>
 			</div>
 		</div>

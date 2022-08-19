@@ -18,6 +18,10 @@ class UserService {
 	static async getContacts(userId: number): Promise<AxiosResponse<ContactProps[]>> {
 		return $api.get<ContactProps[]>(`/contacts?userId=${userId}`);
 	}
+
+	static async deleteContact(contactId: number): Promise<AxiosResponse<{}>> {
+		return $api.delete<{}>(`/contacts/${contactId}`);
+	}
 }
 
 export default UserService;

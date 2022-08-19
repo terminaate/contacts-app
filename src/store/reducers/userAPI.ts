@@ -26,3 +26,17 @@ export const getContacts = createAsyncThunk(
 		}
 	}
 );
+
+
+export const deleteContact = createAsyncThunk(
+	'user/deleteContact',
+	async (contactId: number, thunkAPI) => {
+		try {
+			const {data} = await UserService.deleteContact(contactId);
+			return thunkAPI.fulfillWithValue(contactId);
+		} catch (e: any) {
+			console.log(e.response?.data);
+			return thunkAPI.rejectWithValue(e.response?.data);
+		}
+	}
+);

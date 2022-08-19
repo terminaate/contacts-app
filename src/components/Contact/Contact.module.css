@@ -1,0 +1,32 @@
+.contactContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 90px;
+    padding: 13px;
+    background-color: lightgray;
+}
+
+.contactInfoContainer {
+    display: flex;
+    align-items: flex-start;
+    column-gap: 15px;
+}
+
+.contactInfo {
+    display: flex;
+    align-items: flex-start;
+    row-gap: 5px;
+    flex-direction: column;
+}
+
+.contactInfo span {
+    font-size: 15px;
+}
+
+.contactEditButtons {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
