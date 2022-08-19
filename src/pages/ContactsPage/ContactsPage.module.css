@@ -1,0 +1,28 @@
+.contactsPage {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.contactsContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 600px;
+    margin-top: 40px;
+    /*background: #000;*/
+}
+
+.contactsSearchInput {
+    margin-block: 30px;
+    width: 100%;
+}
+
+.contacts {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    row-gap: 20px;
+}

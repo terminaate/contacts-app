@@ -28,10 +28,14 @@ const AppRouter = () => {
 		navigate('/login');
 	};
 
+	const redirectToGithub = () => {
+		window.open('https://github.com/terminaate/contacts-app', '_blank');
+	};
+
 	return (
 		<>
 			<div className={cl.header}>
-				<DialogTitle>Contacts App</DialogTitle>
+				<DialogTitle onClick={redirectToGithub}>Contacts App</DialogTitle>
 				{user.authorized && (<DialogTitle onClick={logoutHandler}>{String(user.email)}</DialogTitle>)}
 			</div>
 			<Routes>
@@ -39,7 +43,6 @@ const AppRouter = () => {
 				<Route element={<LoginPage />} path={'/login'} />
 				<Route element={<ContactsPage />} path={'/contacts'} />
 			</Routes>
-			<span>Made with love by Terminaate</span>
 		</>
 	);
 };

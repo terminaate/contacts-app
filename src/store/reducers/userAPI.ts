@@ -13,3 +13,16 @@ export const login = createAsyncThunk(
 		}
 	}
 );
+
+export const getContacts = createAsyncThunk(
+	'user/getContacts',
+	async (userId: number, thunkAPI) => {
+		try {
+			const { data } = await UserService.getContacts(userId);
+			return thunkAPI.fulfillWithValue(data);
+		} catch (e: any) {
+			console.log(e.response?.data);
+			return thunkAPI.rejectWithValue(e.response?.data);
+		}
+	}
+);

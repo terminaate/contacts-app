@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login } from '@/store/reducers/userAPI';
+import { getContacts, login } from '@/store/reducers/userAPI';
+import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
+
 
 export interface UserState {
 	user: {
-		id: null | string;
+		id: null | number;
 		accessToken: null | string;
 		error: null | string;
 		authorized: boolean;
 		email: null | string;
+		contacts: ContactProps[]
 	}
 }
 
@@ -17,7 +20,8 @@ const initialState: UserState = {
 		email: null,
 		authorized: false,
 		error: null,
-		accessToken: null
+		accessToken: null,
+		contacts: []
 	}
 };
 
@@ -46,6 +50,18 @@ export const userSlice = createSlice({
 		});
 
 		builder.addCase(login.rejected, (state, action) => {
+			state.user.error = (action.payload as string);
+		});
+
+		builder.addCase(getContacts.fulfilled, (state, action: any) => {
+			state.user.contacts = action.payload;
+		});
+
+		builder.addCase(getContacts.pending, (state) => {
+			state.user.error = null;
+		});
+
+		builder.addCase(getContacts.rejected, (state, action) => {
 			state.user.error = (action.payload as string);
 		});
 	}
