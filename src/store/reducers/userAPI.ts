@@ -55,3 +55,16 @@ export const addContact = createAsyncThunk(
 		}
 	}
 );
+
+export const editContact = createAsyncThunk(
+	'user/editContact',
+	async (contactData: ContactProps, thunkAPI) => {
+		try {
+			const { data } = await ContactsService.editContact(contactData);
+			return thunkAPI.fulfillWithValue(data);
+		} catch (e: any) {
+			console.log(e.response?.data);
+			return thunkAPI.rejectWithValue(e.response?.data);
+		}
+	}
+);

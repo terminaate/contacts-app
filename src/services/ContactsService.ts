@@ -14,6 +14,10 @@ class ContactsService {
 	static async addContact(contactData: ContactProps): Promise<AxiosResponse<ContactProps>> {
 		return $api.post<ContactProps>('/contacts', contactData);
 	}
+
+	static async editContact(contactData: ContactProps): Promise<AxiosResponse<ContactProps>> {
+		return $api.patch<ContactProps>(`/contacts/${contactData.id}`, contactData);
+	}
 }
 
 export default ContactsService;

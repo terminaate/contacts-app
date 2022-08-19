@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addContact, deleteContact, getContacts, login } from '@/store/reducers/userAPI';
+import { addContact, deleteContact, editContact, getContacts, login } from '@/store/reducers/userAPI';
 import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
 
 
@@ -71,6 +71,10 @@ export const userSlice = createSlice({
 
 		builder.addCase(addContact.fulfilled, (state, action: any) => {
 			state.user.contacts = [...state.user.contacts, action.payload];
+		});
+
+		builder.addCase(editContact.fulfilled, (state, action: any) => {
+			state.user.contacts[state.user.contacts.findIndex((obj: ContactProps) => obj.id === action.payload.id)] = action.payload;
 		});
 	}
 });

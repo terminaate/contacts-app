@@ -10,22 +10,22 @@ import { addContact } from '@/store/reducers/userAPI';
 const NewContact = () => {
 	const { id: userId } = useAppSelector(state => state.userSlice.user);
 	const dispatch = useAppDispatch();
-	const [newContact, setNewContact] = useState<ContactProps & { active: boolean }>({
-		active: false,
+	const [newContactActive, setNewContactActive] = useState<boolean>(false);
+	const [newContactPhoto, setNewContactPhoto] = useState<string>('');
+	const [newContact, setNewContact] = useState<ContactProps>({
 		title: '',
 		description: '',
 		userId
-	} as ContactProps & { active: boolean });
-	const [newContactPhoto, setNewContactPhoto] = useState<string>('');
+	} as ContactProps);
+
 
 	const newContactButtonHandler = () => {
-		if (newContact.active) {
+		if (newContactActive) {
 			if (!newContact.title) return;
-			const { active, ...data } = newContact;
-			dispatch(addContact({ ...data, photo: newContactPhoto }));
+			dispatch(addContact({ ...newContact, photo: newContactPhoto }));
 			closeNewContact();
 		} else {
-			setNewContact({ ...newContact, active: true });
+			setNewContactActive(true);
 		}
 	};
 
@@ -52,27 +52,27 @@ const NewContact = () => {
 	const closeNewContact = () => {
 		setNewContact({
 			...newContact,
-			active: false,
 			title: '',
 			description: ''
 		});
+		setNewContactActive(false);
 		setNewContactPhoto('');
 	};
 
 	return (
-		<div onClick={!newContact.active ? newContactButtonHandler : () => 0} data-active={newContact.active}
+		<div onClick={!newContactActive ? newContactButtonHandler : () => 0} data-active={newContactActive}
 				 className={cl.addNewContactContainer}>
-			{!newContact.active ? <span>New contact</span> :
+			{!newContactActive ? <span>New contact</span> :
 				<>
 					<div className={cl.newContactInfoContainer}>
 						<label>
-							<input style={{ display: 'none' }} type='file' value={newContact.photo}
+							<input style={{ display: 'none' }} type='file'
 										 onChange={onAvatarInputChange} />
 							<Avatar style={{ borderRadius: '0', cursor: 'pointer' }} sx={{ width: 70, height: 70 }}
 											src={newContactPhoto} />
 						</label>
 						<div className={cl.newContactInfo}>
-							<Input placeholder={'Название контакта'} value={newContact.title} onChange={onTitleInputChange} />
+							<Input placeholder={'Название контакта*'} value={newContact.title} onChange={onTitleInputChange} />
 							<Input placeholder={'Описание контакта'} value={newContact.description}
 										 onChange={onDescInputChange} />
 						</div>

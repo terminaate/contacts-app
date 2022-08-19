@@ -1,14 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ContactProps } from '@/pages/ContactsPage/ContactsPage';
 import cl from './Contact.module.css';
-import { Avatar, IconButton } from '@mui/material';
+import { Avatar, IconButton, Input } from '@mui/material';
 import editImg from '!/img/edit.svg';
 import closeImg from '!/img/close.svg';
-import { deleteContact } from '@/store/reducers/userAPI';
+import { deleteContact, editContact } from '@/store/reducers/userAPI';
 import { useAppDispatch } from '@/store';
 
 const Contact: FC<{ contact: ContactProps }> = ({ contact }) => {
-	const [isEditing, setIsEditing] = useState<boolean>(false);
+	const [editedContactActive, setEditedContactActive] = useState<boolean>(false);
+	const [editedContactPhoto, setEditedContactPhoto] = useState<string>('');
 	const [editedContact, setEditedContact] = useState<ContactProps>(contact);
 	const dispatch = useAppDispatch();
 
@@ -17,36 +18,66 @@ const Contact: FC<{ contact: ContactProps }> = ({ contact }) => {
 	}, [contact]);
 
 	const editButtonHandler = () => {
-		if (isEditing) {
+		if (editedContactActive) {
+			dispatch(editContact({ ...editedContact, photo: editedContactPhoto }));
+			setEditedContactActive(false);
 		} else {
-			setIsEditing(true);
+			setEditedContactActive(true);
 		}
 	};
 
 	const deleteButtonHandler = () => {
-		if (isEditing) {
-			setIsEditing(false);
+		if (editedContactActive) {
+			setEditedContactActive(false);
 			setEditedContact(contact);
 		} else {
 			dispatch(deleteContact(contact.id));
 		}
 	};
 
+	const onAvatarInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files![0];
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => {
+			setEditedContactPhoto(reader.result as string);
+		};
+		reader.onerror = (error) => {
+			console.log('Error: ', error);
+		};
+	};
+
+	const onTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEditedContact({ ...editedContact, title: e.target.value });
+	};
+
+	const onDescInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEditedContact({ ...editedContact, description: e.target.value });
+	};
+
 	return (
 		<div className={cl.contactContainer}>
 			<div className={cl.contactInfoContainer}>
 
-				{isEditing ? (
+				{editedContactActive ?
 					<label>
-						<input type='file' />
-						<Avatar style={{ borderRadius: '0' }} sx={{ width: 70, height: 70 }} src={editedContact.photo} />
-					</label>
-				) : (
-					<Avatar style={{ borderRadius: '0' }} sx={{ width: 70, height: 70 }} src={contact.photo} />
-				)}
+						<input onChange={onAvatarInputChange} style={{ display: 'none' }} type='file' />
+						<Avatar style={{ borderRadius: '0', cursor: 'pointer' }} sx={{ width: 70, height: 70 }}
+										src={editedContactPhoto} />
+					</label> : <Avatar style={{ borderRadius: '0' }} sx={{ width: 70, height: 70 }} src={contact.photo} />
+				}
 				<div className={cl.contactInfo}>
-					<span>{contact.title}</span>
-					<span>{contact.description}</span>
+					{editedContactActive ? (
+						<>
+							<Input placeholder={'Название контакта*'} value={editedContact.title} onChange={onTitleInputChange} />
+							<Input placeholder={'Описание контакта'} value={editedContact.description} onChange={onDescInputChange} />
+						</>
+					) : (
+						<>
+							<span>{contact.title}</span>
+							<span>{contact.description}</span>
+						</>
+					)}
 				</div>
 			</div>
 			<div className={cl.contactEditButtons}>
