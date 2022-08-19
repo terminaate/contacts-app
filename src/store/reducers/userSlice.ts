@@ -39,7 +39,7 @@ export const userSlice = createSlice({
 		}
 	},
 	extraReducers: (builder) => {
-		// Простите за то что использую здесь тип any, просто я правда для action не нашёл типизации
+		// Извеняюсь за использование здесь типа any, просто я не смог найти для action типа
 
 		const handleReject = (state: UserState, action: any) => {
 			state.user.error = action.payload;
