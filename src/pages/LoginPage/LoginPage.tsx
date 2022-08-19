@@ -48,7 +48,7 @@ const LoginPage = () => {
 				</div>
 				{serverError && (<div className={cl.serverError}>{serverError}</div>)}
 				<div className={cl.loginButtonsContainer}>
-					<Link to={'/register'}>Уже есть аккаунт?</Link>
+					<Link to={'/register'}>Ещё нету аккаунта?</Link>
 					<Button onClick={loginButtonHandler} className={cl.loginButton}>Войти</Button>
 				</div>
 			</div>
