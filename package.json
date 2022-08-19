@@ -1,0 +1,34 @@
+{
+  "name": "contacts-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"node server\"",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/material": "^5.10.1",
+    "@reduxjs/toolkit": "^1.8.4",
+    "axios": "^0.27.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/json-server": "^0.14.4",
+    "@types/node": "^18.7.6",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^1.3.0",
+    "concurrently": "^7.3.0",
+    "json-server": "^0.17.0",
+    "json-server-auth": "^2.1.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.15"
+  }
+}
