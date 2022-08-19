@@ -62,7 +62,7 @@ const NewContact = () => {
 	return (
 		<div onClick={!newContactActive ? newContactButtonHandler : () => 0} data-active={newContactActive}
 				 className={cl.addNewContactContainer}>
-			{!newContactActive ? <span>New contact</span> :
+			{!newContactActive ? <span>Новый контакт</span> :
 				<>
 					<div className={cl.newContactInfoContainer}>
 						<label>

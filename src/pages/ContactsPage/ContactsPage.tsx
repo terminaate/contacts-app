@@ -46,7 +46,7 @@ const ContactsPage = () => {
 	return (
 		<div className={cl.contactsPage}>
 			<div className={cl.contactsContainer}>
-				<h2>Contacts</h2>
+				<h2>Контакты</h2>
 				<Input value={searchInput} onChange={onSearchInputChange} placeholder={'Поиск'}
 							 className={cl.contactsSearchInput} />
 				<div className={cl.contacts}>
