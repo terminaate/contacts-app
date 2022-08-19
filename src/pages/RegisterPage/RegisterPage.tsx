@@ -40,7 +40,7 @@ const RegisterPage = () => {
 						{emailError && (<span className={cl.error}>{emailError}</span>)}
 					</div>
 					<div className={cl.registerInputContainer}>
-						<Input value={passwordInput} placeholder={'Пароль*'}
+						<Input type={"password"} value={passwordInput} placeholder={'Пароль*'}
 									 onChange={e => setPasswordInput(e.target.value)} />
 						{passwordError && (<span className={cl.error}>{passwordError}</span>)}
 					</div>
