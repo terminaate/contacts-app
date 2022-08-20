@@ -77,7 +77,8 @@ export const userSlice = createSlice({
 		});
 
 		builder.addCase(editContact.fulfilled, (state, action: any) => {
-			state.user.contacts[state.user.contacts.findIndex((obj: ContactProps) => obj.id === action.payload.id)] = action.payload;
+			const contactIndex = state.user.contacts.findIndex((obj: ContactProps) => obj.id === action.payload.id);
+			state.user.contacts[contactIndex] = action.payload;
 		});
 	}
 });
