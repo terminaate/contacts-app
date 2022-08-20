@@ -19,7 +19,7 @@ export type ContactProps = {
 const ContactsPage = () => {
 	const { authorized, contacts, id: userId } = useAppSelector(state => state.userSlice.user);
 	// localContacts - переменная где хранятся варианты поиска
-	const [localContacts, setLocalContacts] = useState<ContactProps[]>(contacts ?? []);
+	const [localContacts, setLocalContacts] = useState<ContactProps[]>(contacts);
 	const [searchInput, setSearchInput] = useState<string>('');
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
