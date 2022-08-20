@@ -50,10 +50,10 @@ const ContactsPage = () => {
 				<Input value={searchInput} onChange={onSearchInputChange} placeholder={'Поиск'}
 							 className={cl.contactsSearchInput} />
 				<div className={cl.contacts}>
-					{localContacts ? localContacts.map((contact) => (
+					{localContacts?.map((contact) => (
 							<Contact contact={contact} key={contact.id} />
 						)
-					) : ''}
+					)}
 					<NewContact />
 				</div>
 			</div>
