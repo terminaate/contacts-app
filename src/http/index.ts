@@ -1,4 +1,6 @@
 import axios from 'axios';
+import store from '@/store';
+import { userSlice } from '@/store/reducers/userSlice';
 
 const baseURL = 'http://127.0.0.1:8080';
 
@@ -15,8 +17,7 @@ $api.interceptors.request.use((config) => {
 
 $api.interceptors.response.use((config) => config, (error) => {
 	if (error.response.status == 401 && error.response.data === 'jwt expired' && error.config) {
-		localStorage.removeItem('accessToken');
-		localStorage.removeItem('user');
+		store.dispatch(userSlice.actions.logout());
 	}
 	throw error;
 });
