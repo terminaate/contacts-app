@@ -1,10 +1,4 @@
 {
-  "users": [
-    {
-      "email": "tntwnik@gmail.com",
-      "password": "$2a$10$K4xjsjk6BsgQdSYx800PDe5gC3qP8uUkgxJMe14BBYbwbGj7VIWD6",
-      "id": 1
-    }
-  ],
+  "users": [],
   "contacts": []
 }
